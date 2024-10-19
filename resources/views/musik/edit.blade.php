@@ -36,6 +36,10 @@
         <input type="number" class="form-control" id="pendengar" name="pendengar" value="{{ $music['pendengar'] }}"> <!-- Konsistensi ID dan name -->
     </div>
     <div class="mb-3">
+        <label for="audio" class="form-label">File Lagu (Audio)</label>
+        <input type="file" class="form-control" id="audio" name="audio" accept="audio/*" value="{{ $music['audio'] }}">
+    </div>
+    <div class="mb-3">
         <label for="img" class="form-label">Gambar Lagu</label>
         <input type="file" class="form-control" id="img" accept="image/*" name="img" value="{{  asset('storage/' . $music['img'])  }}" >
     </div>

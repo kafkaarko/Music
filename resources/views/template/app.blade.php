@@ -37,11 +37,20 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('music.home') }}">Music</a></li>
                             <li><a class="dropdown-item" href="{{ route('music.create') }}">Tambah Music</a></li>
-                            <li><a class="dropdown-item" href="#"></a></li>
                         </ul>
                     </li>
-                </ul>
-            </div>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route('akun.index') }}">Akun</a>
+                    </li>
+                    <li class="nav-item">
+                        <form action="{{ route('logout') }}" method="POST" style="display: inline">
+                         @csrf
+                           <button type="submit" class="btn nav-link" style="background: none; border:none; color:inherit;">Logout</button>
+                        </form>
+                       </li>
+                    </ul>
+                </div>
+                <img src="{{ asset('storage/' . Auth::user()->img) }}" alt="User Image" class="img-fluid img-thumbnail" style="border-radius: 50%; width: 40px; height: 40px,+;">
         </div>
     </nav>
 

@@ -32,20 +32,25 @@ class MusicController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' =>'required',
-            'artist' =>'required',
-            'genre' =>'required',
-            'description' =>'required',
-            'pendengar' =>'required|numeric',
-            'img' =>'required|mimes:jpeg,png,jpg|max:2048',
+            'name' => 'required',
+            'artist' => 'required',
+            'genre' => 'required',
+            'description' => 'required',
+            'pendengar' => 'required|numeric',
+            'img' => 'required|mimes:jpeg,png,jpg|max:2048',
             'audio' => 'required|mimes:mp3,wav,aac|max:20480'
         ]);
-
-        $imagePath = $request->file('img')->store('images', 'public');
+        
+        // Simpan gambar lagu
+        $imagePath = $request->file('img')->store('images/lagu', 'public');
+        
+        // Simpan audio jika ada
+        $audioPath = null;
         if ($request->hasFile('audio')) {
-            $audioPath = $request->file('audio')->store('audios', 'public'); // Simpan audio
+            $audioPath = $request->file('audio')->store('audios', 'public');
         }
-
+        
+        // Simpan data ke tabel Music
         Music::create([
             'name-music' => $request->name,
             'artist' => $request->artist,
@@ -53,9 +58,11 @@ class MusicController extends Controller
             'description' => $request->description,
             'pendengar' => $request->pendengar,
             'img' => $imagePath,
-            'audio' => $audioPath ?? null,
+            'audio' => $audioPath,
         ]);
-        return redirect()->back()->with('success','berhasil menambahkan Lagu!');
+        
+        return redirect()->back()->with('success', 'Berhasil menambahkan Lagu!');
+        
     }
 
     /**
@@ -87,6 +94,7 @@ class MusicController extends Controller
             'description' => 'required',
             'pendengar' => 'required|numeric',
             'img' => 'nullable|mimes:jpeg,png,jpg|max:2048',
+            'audio' => 'required|mimes:mp3,wav,aac|max:20480'
         ]);
         
         $music = Music::findOrFail($id);
@@ -99,8 +107,10 @@ class MusicController extends Controller
             }
         
             // Simpan gambar baru
-            $imagePath = $request->file('img')->store('images', 'public');
+            $imagePath = $request->file('img')->store('images/lagu', 'public');
             $music->img = $imagePath; // Set gambar baru
+            $audioPath = $request->file('audio')->store('audio', 'public');
+            $music->audio = $audioPath; // Set gambar baru
         }
         
         // Update semua data yang sesuai
@@ -110,7 +120,9 @@ class MusicController extends Controller
             'genre' => $request->genre,
             'description' => $request->description,
             'pendengar' => $request->pendengar,
+            'audio' => $request->audio,
             'img' => $music->img  // Gambar akan di-update jika ada, jika tidak tetap yang lama
+
         ]);
         
         return redirect()->back()->with('success', 'Berhasil mengubah Lagu!');

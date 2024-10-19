@@ -7,7 +7,7 @@
         <div class="col-md-4">
                 
             <!-- Gambar Musik -->
-            <img src="{{ asset('storage/' . $ms->img) }}"  class="img-fluid">
+            <img src="{{ asset('storage/' . $ms->img) }}" alt="error" class="img-fluid">
 
         </div>
         <div class="col-md-8">
